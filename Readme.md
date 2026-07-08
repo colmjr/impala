@@ -68,9 +68,9 @@ This will produce an executable file at `target/release/impala` that you can cop
 $ impala
 ```
 
-## 🛠️Custom keybindings
+## 🛠️Custom keybindings and themes
 
-Keybindings can be customized in the config file `$HOME/.config/impala/config.toml`
+Keybindings and themes can be customized in the config file `$HOME/.config/impala/config.toml`
 
 ```toml
 
@@ -98,6 +98,15 @@ share = "p"
 [station.new_network]
 show_all = "a"
 connect_hidden = ""
+
+[theme]
+background = "dark gray"
+border = "green"
+text_color = "white"
+hidden_color = "dark gray"
+info_color = "green"
+warning_color = "yellow"
+error_color = "red"
 ```
 
 ## Contributing

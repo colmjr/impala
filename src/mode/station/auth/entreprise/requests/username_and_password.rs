@@ -1,6 +1,6 @@
-use crate::agent::AuthAgent;
-use crate::event::Event;
+use crate::{agent::AuthAgent, config::Config, event::Event};
 use anyhow::Result;
+use std::sync::Arc;
 use tokio::sync::mpsc::UnboundedSender;
 
 use crossterm::event::{KeyCode, KeyEvent};
@@ -8,7 +8,7 @@ use crossterm::event::{KeyCode, KeyEvent};
 use ratatui::{
     Frame,
     layout::{Constraint, Direction, Layout, Margin},
-    style::{Color, Style, Stylize},
+    style::{Style, Stylize},
     text::{Line, Span, Text},
     widgets::{Block, BorderType, Borders, Clear, List},
 };
@@ -108,7 +108,7 @@ impl RequestUsernameAndPassword {
         self.password.reset();
         Ok(())
     }
-    pub fn render(&self, frame: &mut Frame) {
+    pub fn render(&self, frame: &mut Frame, config: Arc<Config>) {
         let popup_layout = Layout::default()
             .direction(Direction::Vertical)
             .constraints([
@@ -157,13 +157,13 @@ impl RequestUsernameAndPassword {
 
         let items = vec![
             Line::from(vec![
-                Span::raw(" Username ").bold().bg(Color::DarkGray),
+                Span::raw(" Username ").bold().bg(config.theme.background),
                 Span::from("  "),
                 Span::from(self.username.value()),
             ]),
             Line::from(""),
             Line::from(vec![
-                Span::raw(" Password ").bold().bg(Color::DarkGray),
+                Span::raw(" Password ").bold().bg(config.theme.background),
                 Span::from("  "),
                 Span::from({
                     if self.show_password {
@@ -189,7 +189,7 @@ impl RequestUsernameAndPassword {
             Block::new()
                 .borders(Borders::ALL)
                 .border_type(BorderType::Thick)
-                .border_style(Style::default().fg(Color::Green)),
+                .border_style(Style::default().fg(config.theme.border)),
             area,
         );
         frame.render_widget(
